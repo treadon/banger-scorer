@@ -1,0 +1,13 @@
+venv/
+__pycache__/
+*.pyc
+data/fma_small/
+data/fma_metadata/
+data/*.zip
+data/embeddings/
+*.pt
+*.pkl
+results/
+output/
+training_results.png
+.DS_Store
