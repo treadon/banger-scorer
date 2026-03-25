@@ -340,15 +340,23 @@ Spearman correlation is arguably more important than MAE for our use case. We do
 
 ### Results
 
-*(To be filled in after training completes)*
+| Metric | Value | Target | |
+|--------|-------|--------|---|
+| **Test MAE** | **0.858** | < 1.5 | Exceeded target by 43% |
+| **Test Spearman Correlation** | **0.468** | > 0.4 | Hit target |
+| **Val MAE** | **0.822** | — | |
+| **Best Epoch** | 9 | out of 200 max | Early stopped at epoch 30 |
+| **Training Time** | ~30 seconds | — | On M4 Pro MPS with cached embeddings |
+| **Model Size** | ~2.6 MB | < 50 MB | 658K params × 4 bytes |
 
-| Metric | Value | Notes |
-|--------|-------|-------|
-| Test MAE | TBD | Target: < 1.5 |
-| Test Spearman Correlation | TBD | Target: > 0.4 |
-| Best Epoch | TBD | Out of max 200 |
-| Training Time | TBD | On M4 Pro MPS |
-| Model Size | ~2.2 MB | 558K params × 4 bytes |
+**What the scatter plot shows:**
+- The model learned a real trend — low actual scores get low predictions, high get high
+- Most FMA songs cluster in the 1-5 range (few true bangers in an indie archive)
+- The model struggles at extremes (8+) — too few examples to learn from
+- The correlation (0.468) means the model's ranking agrees with actual popularity about half the time — enough to filter the worst from the best, not enough to be an oracle
+
+**What this means for the pipeline:**
+An MAE of 0.86 on a 0-10 scale means the model is typically off by less than 1 point. For filtering purposes (pick top 5 from 50), this is very usable — the model can reliably distinguish a 2/10 from a 6/10, even if it can't tell a 7/10 from an 8/10.
 
 ## Step 4: Autoresearch — Overnight Optimization
 
@@ -489,11 +497,28 @@ No cloud GPUs, no API costs, no data leaving the machine.
 2. First attempt tried loading all 8000 tracks into RAM simultaneously with ThreadPoolExecutor (8K × 30s × 24kHz × 4 bytes ≈ 23GB). Process was killed by OOM. Fixed by processing sequentially — one track at a time, ~1.7GB peak memory.
 3. Initial runs showed no progress because `print()` output was buffered. Added `flush=True` to all prints.
 
+**Final results:**
+- 7,997 tracks successfully embedded (3 corrupt MP3s failed — 99.96% success rate)
+- Output shape: `(7997, 1024)` — 31 MB on disk
+- Total wall time: **101.4 minutes**
+- Consistent 1.3 tracks/s throughout the run, no slowdowns or memory issues
+
 **Why not parallelize GPU inference?**
 MPS (Metal) doesn't support concurrent streams like CUDA does. You can't run two MERT forward passes simultaneously on one Apple GPU. The CPU-bound MP3 decoding (~0.5s) overlaps slightly with GPU inference (~0.3s) but true pipelining would need CUDA streams.
 
 ### Training Run 1: Baseline MLP
-*(TBD — will log all hyperparameters, training curve, val/test metrics)*
+- Input dim: 1024 (auto-detected from embeddings)
+- Architecture: 1024 → 512 → 256 → 128 → 1 (BatchNorm + ReLU + Dropout at each layer)
+- Dropout: 0.3
+- Optimizer: AdamW, lr=1e-3, weight_decay=1e-4
+- Scheduler: CosineAnnealingLR over 200 epochs
+- Batch size: 64
+- Split: 5600 train / 1200 val / 1200 test
+- Best epoch: **9** (early stopped at 30 with patience=20)
+- Test MAE: **0.858** | Test Spearman: **0.468** | Val MAE: **0.822**
+- Training time: ~30 seconds on MPS (cached embeddings, tiny model)
+- The model converged extremely fast — loss dropped from 4.5 to 1.4 in the first 2 epochs, then gradually to ~0.1 by epoch 25. But validation MAE plateaued at epoch 9, meaning later improvements were overfitting.
+- Scatter plot shows clear positive trend but most predictions compressed into 1-5 range. The model has learned the central tendency well but can't differentiate the extremes.
 
 ### Autoresearch Experiments
 *(TBD — will log each experiment's architecture changes and results)*
