@@ -8,6 +8,8 @@ data/embeddings/
 *.pt
 *.pkl
 results/
-output/
+output*/
 training_results.png
 .DS_Store
+ace-step/checkpoints/
+.cache/

@@ -15,7 +15,7 @@ import tempfile
 import time
 import numpy as np
 import torch
-import torchaudio
+import librosa
 from transformers import AutoModel, AutoFeatureExtractor
 from pathlib import Path
 
@@ -23,7 +23,7 @@ from pathlib import Path
 from train_scorer import BangerScorer
 
 
-def load_scorer(model_path: str, device: str, input_dim: int = 768):
+def load_scorer(model_path: str, device: str, input_dim: int = 1024):
     """Load the trained banger scorer."""
     model = BangerScorer(input_dim=input_dim)
     model.load_state_dict(torch.load(model_path, weights_only=True, map_location=device))
@@ -45,19 +45,8 @@ def load_mert(device: str):
 
 def embed_audio(audio_path: str, mert_model, feature_extractor, device: str) -> np.ndarray:
     """Extract MERT embedding from a WAV file."""
-    waveform, sr = torchaudio.load(audio_path)
-
-    # Convert to mono
-    if waveform.shape[0] > 1:
-        waveform = waveform.mean(dim=0, keepdim=True)
-
-    # Resample to MERT's expected rate
     target_sr = feature_extractor.sampling_rate
-    if sr != target_sr:
-        resampler = torchaudio.transforms.Resample(orig_freq=sr, new_freq=target_sr)
-        waveform = resampler(waveform)
-
-    waveform = waveform.squeeze(0)
+    waveform, _ = librosa.load(audio_path, sr=target_sr, mono=True)
 
     # Truncate to 30s max for consistency
     max_samples = target_sr * 30
@@ -65,7 +54,7 @@ def embed_audio(audio_path: str, mert_model, feature_extractor, device: str) -> 
         waveform = waveform[:max_samples]
 
     inputs = feature_extractor(
-        waveform.numpy(),
+        waveform,
         sampling_rate=target_sr,
         return_tensors="pt",
     )

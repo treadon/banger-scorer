@@ -30,7 +30,7 @@ class BangerDataset(Dataset):
 
 
 class BangerScorer(nn.Module):
-    def __init__(self, input_dim: int = 768, dropout: float = 0.3):
+    def __init__(self, input_dim: int = 1024, dropout: float = 0.3):
         super().__init__()
         self.net = nn.Sequential(
             nn.Linear(input_dim, 512),
