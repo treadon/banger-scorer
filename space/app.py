@@ -88,27 +88,31 @@ def get_percentile(score):
     return 100
 
 
-def score_song(audio):
+def score_song(audio, progress=gr.Progress()):
     """Score a single audio file. Takes filepath from gr.Audio."""
     if audio is None:
-        return "## Upload a song first"
+        return "## Upload a song first", ""
 
     # gr.Audio with type="filepath" gives us a string path
     audio_path = audio
 
     try:
+        progress(0, desc="Loading audio...")
         wav, _ = librosa.load(audio_path, sr=feature_extractor.sampling_rate, mono=True)
         max_samples = feature_extractor.sampling_rate * 30
         if len(wav) > max_samples:
             wav = wav[:max_samples]
 
+        progress(0.2, desc="Extracting features...")
         inputs = feature_extractor(
             wav, sampling_rate=feature_extractor.sampling_rate, return_tensors="pt"
         )
 
+        progress(0.4, desc="Running MERT encoder (this is the slow part)...")
         with torch.no_grad():
             outputs = mert_model(**inputs)
             embedding = outputs.last_hidden_state.mean(dim=1)
+            progress(0.8, desc="Scoring...")
             score = scorer(embedding).item()
 
         score = max(0, min(10, score))
@@ -137,10 +141,10 @@ def score_song(audio):
 
 *Scored using MERT-v1-330M embeddings + trained MLP. The scorer favors high-energy, rhythmically driven music. Best used for relative ranking, not absolute judgment.*
 """
-        return result
+        return result, ""
 
     except Exception as e:
-        return f"## Error\n\n{str(e)}"
+        return f"## Error\n\n{str(e)}", ""
 
 
 with gr.Blocks(
@@ -164,22 +168,29 @@ with gr.Blocks(
                 type="filepath",
             )
             score_btn = gr.Button(
-                "🔥 Score it!",
+                "🔥 Score this track",
                 variant="primary",
                 size="lg",
             )
 
         with gr.Column(scale=1):
+            status_output = gr.Markdown(value="", label="Status")
             result_output = gr.Markdown(
-                value="## Upload a song and press Score it!",
+                value="## Upload a song and hit Score",
                 label="Result",
             )
 
     score_btn.click(
+        fn=lambda: "### 🎵 Analyzing your song...\n\n*Running MERT encoder — this takes ~30s on CPU*",
+        inputs=None,
+        outputs=status_output,
+        queue=False,
+    ).then(
         fn=score_song,
         inputs=audio_input,
-        outputs=result_output,
+        outputs=[result_output, status_output],
         api_name="score",
+        show_progress="minimal",
     )
 
     gr.Markdown(
