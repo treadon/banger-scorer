@@ -119,6 +119,19 @@ Listen count median: 2,492
 
 The huge gap between mean (4,730) and median (2,492) tells us the distribution is heavily right-skewed — most songs have modest play counts, a few have hundreds of thousands. This is typical of popularity distributions (power law / Pareto distribution).
 
+After log-normalization to our 0-10 banger scale, the distribution looks like:
+
+```
+Score ≥ 1:   99.3% of tracks   (7,945)
+Score ≥ 3:   56.4% of tracks   (4,508)
+Score ≥ 5:    8.4% of tracks     (668)
+Score ≥ 7:    0.6% of tracks      (45)
+Score ≥ 9:    0.1% of tracks       (4)
+Median: 3.20, Mean: 3.27
+```
+
+This is critical context for interpreting our test results later. Only 45 tracks out of 8,000 score above 7 — the model has almost no examples of what a true "banger" sounds like. It learned the 2-5 range well but can't confidently score anything higher because the training data barely contains high-scoring songs.
+
 ### The Popularity Problem
 
 Raw play counts are a flawed quality signal:
@@ -189,14 +202,12 @@ For each 30-second track, here's what happens:
 
 **1. Load and resample audio**
 ```python
-waveform, sr = torchaudio.load("track.mp3")  # Load raw audio
-# Convert stereo → mono (average left and right channels)
-waveform = waveform.mean(dim=0)
-# Resample to 16kHz (MERT's expected input rate)
-# Why 16kHz? It captures frequencies up to 8kHz (Nyquist theorem)
-# which covers most musically relevant content while keeping data small
-resampler = torchaudio.transforms.Resample(orig_freq=sr, new_freq=16000)
-waveform = resampler(waveform)
+# librosa handles MP3 decoding, resampling, and mono conversion in one call
+waveform, _ = librosa.load("track.mp3", sr=24000, mono=True)
+# MERT-v1-330M expects 24kHz audio (not 16kHz — we learned this the hard way,
+# the feature extractor throws a ValueError if you pass the wrong sample rate)
+# 24kHz captures frequencies up to 12kHz (Nyquist theorem), covering the full
+# musically relevant spectrum while keeping data manageable
 ```
 
 **2. Feature extraction**
@@ -672,12 +683,16 @@ The scorer essentially learned "popular FMA music has strong beats and high ener
 ## Reproduce It
 
 ```bash
-git clone <this-repo>
+# Clone with submodule
+git clone --recursive https://github.com/treadon/banger-scorer.git
 cd banger-scorer
 
-# Setup
+# Setup scorer venv (Python 3.11+)
 python3 -m venv venv && source venv/bin/activate
 pip install torch transformers librosa soundfile numpy pandas scikit-learn matplotlib
+
+# Setup ACE-Step venv (requires Python 3.12, uses uv)
+cd ace-step && uv sync --python 3.12 && cd ..
 
 # Download FMA data
 cd data
@@ -687,18 +702,51 @@ python3 -c "import zipfile; zipfile.ZipFile('fma_metadata.zip').extractall('.')"
 python3 -c "import zipfile; zipfile.ZipFile('fma_small.zip').extractall('.')"
 cd ..
 
-# Extract MERT embeddings (2-4 hours, one-time)
+# Or skip the above and use pre-computed embeddings from HuggingFace:
+# pip install datasets
+# python -c "from datasets import load_dataset; ds = load_dataset('treadon/fma-mert-embeddings')"
+
+# Extract MERT embeddings (~100 min on M4 Pro, one-time)
 python embed_dataset.py
 
-# Train scorer (10-30 min)
+# Train scorer (~30 seconds)
 python train_scorer.py
 
-# Generate and filter bangers (requires ACE-Step setup)
-python banger.py --prompt "upbeat pop song about summer" --generate 50 --keep 5
+# Generate and filter bangers
+python generate_and_score.py --generate 20 --keep 5 --output-dir output
+
+# Run the full 10-genre test suite (~5 hours)
+python run_all_tests.py
+```
+
+## Project Structure
+
+```
+banger-scorer/
+├── ace-step/                  # ACE-Step 1.5 (git submodule)
+├── data/
+│   ├── fma_small/             # FMA audio (8K tracks, 7.2GB)
+│   ├── fma_metadata/          # FMA metadata (tracks.csv, genres.csv)
+│   └── embeddings/            # Cached MERT embeddings (31MB)
+├── test_configs/              # Per-genre test configurations (JSON)
+├── test01/ ... test10/        # Test results per genre
+├── best_overall/              # Top songs across all tests
+├── embed_dataset.py           # Extract MERT embeddings from audio
+├── train_scorer.py            # Train the MLP scorer head
+├── generate_and_score.py      # Generate + score + rank pipeline
+├── run_test.py                # Run a single test from config
+├── run_all_tests.py           # Run all tests + compile best overall
+├── prepare.py                 # Autoresearch data loader
+├── train.py                   # Autoresearch trainable file
+├── program.md                 # Autoresearch agent instructions
+├── WRITEUP.md                 # This file
+└── scorer_model.pt            # Trained model weights
 ```
 
 ## Links
 
+- [GitHub: treadon/banger-scorer](https://github.com/treadon/banger-scorer) — This project
+- [HuggingFace Dataset: treadon/fma-mert-embeddings](https://huggingface.co/datasets/treadon/fma-mert-embeddings) — Pre-computed embeddings (skip the 100-min extraction)
 - [MERT: Acoustic Music Understanding Model](https://huggingface.co/m-a-p/MERT-v1-330M) — The pretrained audio encoder
 - [ACE-Step 1.5: Music Generation](https://huggingface.co/ACE-Step/Ace-Step1.5) — The music generator
 - [FMA: Free Music Archive Dataset](https://github.com/mdeff/fma) — Training data
@@ -706,4 +754,4 @@ python banger.py --prompt "upbeat pop song about summer" --generate 50 --keep 5
 
 ---
 
-*Built with Claude Code on a MacBook Pro M4 Pro (64GB). No cloud GPUs were used.*
+*Built with [Claude Code](https://claude.ai/claude-code) on a MacBook Pro M4 Pro (64GB). No cloud GPUs were used. 200 songs generated and scored across 10 genres in 6 languages.*
