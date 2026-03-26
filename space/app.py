@@ -55,34 +55,7 @@ model_path = hf_hub_download(
 scorer = BangerScorer(input_dim=1024)
 scorer.load_state_dict(torch.load(model_path, weights_only=True, map_location="cpu"))
 scorer.eval()
-print("Scorer loaded.")
-
-GENRE_BENCHMARKS = {
-    "EDM": {"mean": 3.71, "best": 5.29},
-    "Punjabi/Bhangra": {"mean": 3.77, "best": 4.26},
-    "Bollywood": {"mean": 3.53, "best": 4.38},
-    "C-Pop": {"mean": 3.20, "best": 4.47},
-    "Latin/Reggaeton": {"mean": 3.19, "best": 3.90},
-    "Pop/Dance": {"mean": 3.05, "best": 4.31},
-    "Rock/Alt": {"mean": 3.03, "best": 3.66},
-    "Hip Hop": {"mean": 2.92, "best": 3.38},
-    "Acoustic/Folk": {"mean": 2.63, "best": 3.31},
-    "R&B/Soul": {"mean": 2.62, "best": 3.21},
-}
-
-FMA_PERCENTILES = [
-    (1.0, 5), (1.5, 10), (2.0, 20), (2.5, 35),
-    (3.0, 45), (3.5, 58), (4.0, 70), (4.5, 78),
-    (5.0, 84), (5.5, 89), (6.0, 93), (6.5, 96),
-    (7.0, 97.5), (8.0, 99), (9.0, 99.8), (10.0, 100),
-]
-
-
-def get_percentile(score):
-    for threshold, pct in FMA_PERCENTILES:
-        if score <= threshold:
-            return pct
-    return 100
+print("Scorer loaded. Ready!")
 
 
 def get_rating(score):
@@ -102,20 +75,33 @@ def get_rating(score):
         return "Not a Banger", "💀"
 
 
-def score_song(audio_path):
-    if audio_path is None:
-        return "No audio uploaded", "", ""
+def get_percentile(score):
+    percentiles = [
+        (1.0, 5), (1.5, 10), (2.0, 20), (2.5, 35),
+        (3.0, 45), (3.5, 58), (4.0, 70), (4.5, 78),
+        (5.0, 84), (5.5, 89), (6.0, 93), (7.0, 97.5),
+        (8.0, 99), (10.0, 100),
+    ]
+    for threshold, pct in percentiles:
+        if score <= threshold:
+            return pct
+    return 100
+
+
+def score_song(audio):
+    """Score a single audio file. Takes filepath from gr.Audio."""
+    if audio is None:
+        return "## Upload a song first"
+
+    # gr.Audio with type="filepath" gives us a string path
+    audio_path = audio
 
     try:
-        # Load audio
         wav, _ = librosa.load(audio_path, sr=feature_extractor.sampling_rate, mono=True)
-
-        # Truncate to 30s
         max_samples = feature_extractor.sampling_rate * 30
         if len(wav) > max_samples:
             wav = wav[:max_samples]
 
-        # MERT encoding
         inputs = feature_extractor(
             wav, sampling_rate=feature_extractor.sampling_rate, return_tensors="pt"
         )
@@ -129,96 +115,83 @@ def score_song(audio_path):
         rating, emoji = get_rating(score)
         percentile = get_percentile(score)
 
-        # Build result
-        score_text = f"# {emoji} {score:.1f} / 10\n### {rating}"
+        result = f"""# {emoji} {score:.1f} / 10
 
-        # Context
-        context_lines = [
-            f"**Percentile:** Better than {percentile:.0f}% of real music in FMA dataset",
-            "",
-            "**How this compares to our AI-generated test songs:**",
-            "",
-            "| Genre | Mean Score | Your Song |",
-            "|-------|-----------|-----------|",
-        ]
-        for genre, stats in GENRE_BENCHMARKS.items():
-            marker = " ◀" if abs(score - stats["mean"]) < 0.3 else ""
-            context_lines.append(
-                f"| {genre} | {stats['mean']:.2f} | {marker} |"
-            )
+### {rating}
 
-        context_text = "\n".join(context_lines)
+---
 
-        details = (
-            f"**Score:** {score:.2f}/10\n\n"
-            f"**Rating:** {rating}\n\n"
-            f"**FMA Percentile:** {percentile:.0f}th — "
-            f"{'above average' if percentile > 50 else 'below average'} "
-            f"compared to 8,000 real songs\n\n"
-            f"*Scored using MERT-v1-330M embeddings + trained MLP. "
-            f"The scorer was trained on FMA play counts and favors "
-            f"high-energy, rhythmically driven music. "
-            f"Scores are most useful for relative ranking, not absolute judgment.*"
-        )
+**Better than {percentile:.0f}%** of real songs in the FMA dataset (8,000 tracks)
 
-        return score_text, context_text, details
+| How this compares | Mean Score |
+|---|---|
+| EDM (top AI genre) | 3.71 |
+| Punjabi/Bhangra | 3.77 |
+| Bollywood | 3.53 |
+| Pop/Dance | 3.05 |
+| Hip Hop | 2.92 |
+| R&B/Soul | 2.62 |
+| **Your song** | **{score:.2f}** |
+
+---
+
+*Scored using MERT-v1-330M embeddings + trained MLP. The scorer favors high-energy, rhythmically driven music. Best used for relative ranking, not absolute judgment.*
+"""
+        return result
 
     except Exception as e:
-        return f"Error: {str(e)}", "", ""
+        return f"## Error\n\n{str(e)}"
 
 
-# Build the Gradio interface
 with gr.Blocks(
     title="Banger Scorer",
-    theme=gr.themes.Base(primary_hue="orange"),
+    theme=gr.themes.Soft(primary_hue="orange"),
 ) as demo:
     gr.Markdown(
         """
         # 🔥 Banger Scorer
-        ### Rate any song 0-10 on banger potential
+        ### Upload any song. Get a banger score from 0 to 10.
 
-        Upload an MP3 or WAV and the model will score it using
-        [MERT](https://huggingface.co/m-a-p/MERT-v1-330M) audio embeddings + a trained MLP.
-
-        *Trained on 8,000 songs from the Free Music Archive. Runs on CPU — scoring takes ~30 seconds.*
+        Uses [MERT](https://huggingface.co/m-a-p/MERT-v1-330M) (330M param music model) + a trained MLP.
+        Runs on CPU — scoring takes ~30 seconds.
         """
     )
 
     with gr.Row():
         with gr.Column(scale=1):
             audio_input = gr.Audio(
-                label="Upload a song",
+                label="Drop a song here",
                 type="filepath",
-                sources=["upload", "microphone"],
             )
-            score_btn = gr.Button("Score it!", variant="primary", size="lg")
+            score_btn = gr.Button(
+                "🔥 Score it!",
+                variant="primary",
+                size="lg",
+            )
 
         with gr.Column(scale=1):
-            score_output = gr.Markdown(label="Score")
-            context_output = gr.Markdown(label="Context")
-
-    details_output = gr.Markdown(label="Details")
+            result_output = gr.Markdown(
+                value="## Upload a song and press Score it!",
+                label="Result",
+            )
 
     score_btn.click(
         fn=score_song,
-        inputs=[audio_input],
-        outputs=[score_output, context_output, details_output],
+        inputs=audio_input,
+        outputs=result_output,
+        api_name="score",
     )
 
     gr.Markdown(
         """
         ---
-        **How it works:** Your audio is encoded by MERT (a 330M-parameter music understanding model)
-        into a 1024-dimensional embedding, then scored by a tiny MLP trained on music popularity data.
+        **How it works:** Audio → MERT encoder (1024-dim embedding) → MLP scorer → 0-10 score
 
-        **Limitations:** The scorer favors high-energy electronic music and underrates
-        mellow genres (R&B, folk). Use scores for relative comparison, not absolute judgment.
+        **Limitations:** Favors high-energy electronic music. Underrates mellow genres. Use for relative comparison.
 
-        **Links:**
-        [GitHub](https://github.com/treadon/banger-scorer) |
-        [Blog Post](https://riteshkhanna.com/banger-scorer) |
-        [Dataset: 230 AI Songs](https://huggingface.co/datasets/treadon/banger-scorer-generated-songs) |
-        [Dataset: MERT Embeddings](https://huggingface.co/datasets/treadon/fma-mert-embeddings) |
+        [GitHub](https://github.com/treadon/banger-scorer) ·
+        [Blog](https://riteshkhanna.com/blog/banger-scorer) ·
+        [230 AI Songs](https://huggingface.co/datasets/treadon/banger-scorer-generated-songs) ·
         [Model](https://huggingface.co/treadon/banger-scorer)
         """
     )

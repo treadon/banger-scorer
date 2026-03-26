@@ -19,4 +19,4 @@ Uses [MERT-v1-330M](https://huggingface.co/m-a-p/MERT-v1-330M) audio embeddings 
 
 Trained on 8,000 songs from the [Free Music Archive](https://github.com/mdeff/fma).
 
-[GitHub](https://github.com/treadon/banger-scorer) | [Blog](https://riteshkhanna.com/banger-scorer) | [Full Writeup](https://github.com/treadon/banger-scorer/blob/main/WRITEUP.md)
+[GitHub](https://github.com/treadon/banger-scorer) | [Blog](https://riteshkhanna.com/blog/banger-scorer) | [Full Writeup](https://github.com/treadon/banger-scorer/blob/main/WRITEUP.md)
