@@ -23,10 +23,10 @@ ACE_STEP_DIR = os.path.join(os.path.dirname(os.path.abspath(__file__)), "ace-ste
 PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 CAPTION_VARIANTS = [
-    "90s east coast hip hop, heavy bass, boom bap drums, deep male vocals, Notorious BIG flow, piano samples, vinyl crackle, confident swagger",
-    "dark 90s hip hop, orchestral strings, menacing bass, slow flow, cinematic, Biggie style storytelling, deep voice, minor key",
+    "90s east coast hip hop, heavy bass, boom bap drums, deep male vocals, smooth confident flow, piano samples, vinyl crackle, swagger",
+    "dark 90s hip hop, orchestral strings, menacing bass, slow deliberate flow, cinematic, street storytelling, deep voice, minor key",
     "classic boom bap, jazzy piano loops, hard snare, deep male rapper, New York hip hop, smooth flow, head-nodding beat",
-    "gritty street rap, heavy 808 bass, chopped soul samples, aggressive delivery, Brooklyn hip hop, raw production",
+    "gritty street rap, heavy 808 bass, chopped soul samples, aggressive delivery, raw hip hop production, hard-hitting drums",
 ]
 
 BPM_VARIANTS = [78, 85, 90, 95, 100]
@@ -37,7 +37,7 @@ DEFAULT_LYRICS = """[Verse 1]
 Yeah, uh, check it
 Crown on my head, gold on my neck
 Every word I spit, cash a bigger check
-From the block to the top, never looked back
+From the bottom to the top, never looked back
 Spit it smooth like silk on a Cadillac track
 
 [Chorus]
@@ -60,7 +60,7 @@ Crown heavy but I wear it tight
 
 [Outro]
 Yeah, you know how we do
-Brooklyn to the world, nothing but the truth"""
+From the ground up, nothing but the truth"""
 
 # Single-song generation script (written to disk, run in isolated subprocess)
 GEN_SCRIPT = '''
@@ -285,17 +285,25 @@ def main():
     print(f"{'='*60}", flush=True)
 
     for i, r in enumerate(results):
-        marker = " ★" if i < args.keep else ""
+        is_top = i < args.keep
+        is_bottom = i >= len(results) - args.keep
+        marker = " ★ BEST" if is_top else (" ✗ WORST" if is_bottom else "")
         print(f"  #{i+1} {r['score']:.2f}/10 | bpm={r['bpm']} key={r['key']} seed={r['seed']}{marker}", flush=True)
-        if i < args.keep:
-            fname = f"banger_{i+1:02d}_score{r['score']:.1f}_bpm{r['bpm']}_{r['key'].replace(' ', '')}_seed{r['seed']}.wav"
+
+        if is_top:
+            fname = f"best_{i+1:02d}_score{r['score']:.1f}_bpm{r['bpm']}_{r['key'].replace(' ', '')}_seed{r['seed']}.wav"
+            dest = os.path.join(output_dir, fname)
+            shutil.copy2(r["path"], dest)
+        elif is_bottom:
+            rank_from_bottom = len(results) - i
+            fname = f"worst_{rank_from_bottom:02d}_score{r['score']:.1f}_bpm{r['bpm']}_{r['key'].replace(' ', '')}_seed{r['seed']}.wav"
             dest = os.path.join(output_dir, fname)
             shutil.copy2(r["path"], dest)
 
     with open(os.path.join(output_dir, "results.json"), "w") as f:
         json.dump({"results": [{k: v for k, v in r.items() if k != "path"} for r in results]}, f, indent=2)
 
-    print(f"\nTop {args.keep} saved to {output_dir}/", flush=True)
+    print(f"\nTop {args.keep} + bottom {args.keep} saved to {output_dir}/", flush=True)
 
 
 if __name__ == "__main__":
