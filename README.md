@@ -26,6 +26,21 @@ The best AI songs â€” melodic techno, Punjabi bhangra, Bollywood dance numbers â
 
 ![Score distribution across all genres](https://raw.githubusercontent.com/treadon/banger-scorer/main/plots/overview/global_scatter.png)
 
+### Listen for Yourself
+
+Hear the best and worst songs from each genre on HuggingFace (built-in audio player):
+
+**[Browse and play all 230 songs on HuggingFace](https://huggingface.co/datasets/treadon/banger-scorer-generated-songs?row=0)**
+
+| | Song | Score | Genre | BPM | Key |
+|---|------|-------|-------|-----|-----|
+| #1 | [Best overall](https://huggingface.co/datasets/treadon/banger-scorer-generated-songs/viewer?row=0&sort%5Bcolumn%5D=banger_score&sort%5Bdirection%5D=desc) | **5.29** | EDM | 130 | Eb minor |
+| #2 | [Runner up](https://huggingface.co/datasets/treadon/banger-scorer-generated-songs/viewer?row=1&sort%5Bcolumn%5D=banger_score&sort%5Bdirection%5D=desc) | **4.90** | EDM | 138 | F minor |
+| #3 | [3rd place](https://huggingface.co/datasets/treadon/banger-scorer-generated-songs/viewer?row=2&sort%5Bcolumn%5D=banger_score&sort%5Bdirection%5D=desc) | **4.87** | EDM | 126 | Eb minor |
+| #last | [Worst overall](https://huggingface.co/datasets/treadon/banger-scorer-generated-songs/viewer?row=0&sort%5Bcolumn%5D=banger_score&sort%5Bdirection%5D=asc) | **1.98** | Pop | 128 | G major |
+
+> Sort by `banger_score` descending on HuggingFace to hear the best first, or ascending for the worst. Can you tell the difference?
+
 ## How It Works
 
 ```
