@@ -650,6 +650,41 @@ The scorer essentially learned "popular FMA music has strong beats and high ener
 
 8. **Multilingual generation works.** Hindi, Punjabi, Spanish, and Chinese lyrics all generated successfully. Interestingly, Punjabi and Bollywood scored highest among all genres — ACE-Step may have strong South Asian music training data, or the rhythmic patterns (dhol, desi bass) align well with what the scorer learned from FMA's "International" genre category.
 
+## Conclusions
+
+**The model works, but with clear biases and limitations.**
+
+### 1. The scorer learned "energy = popular"
+
+The strongest signal the model learned is simple: high energy, driving rhythms, and loud production correlate with FMA popularity. The ranking across 200 songs proves this:
+- **Top tier (mean 3.5+):** Punjabi/Bhangra, EDM, Bollywood — all beat-driven, high energy
+- **Bottom tier (mean 2.6):** R&B/Soul, Acoustic/Folk — mellow, subtle, nuanced
+- The "traditional" caption style (dhol, tumbi, bhangra) scored highest across all style keywords (mean 3.8)
+
+### 2. AI music is "average" by real-music standards
+
+The generated-vs-training plot (`plots/training/generated_vs_training.png`) is the most telling: AI songs cluster tightly around the FMA mean (3.17 generated vs 3.27 FMA), but real music has a long right tail up to 10. Our best song (5.29 EDM) sits at the 67th percentile — above average but nowhere near exceptional. AI music generation produces competent mediocrity, not bangers.
+
+### 3. Minor keys outperformed major keys
+
+Surprising: minor keys scored 3.26 mean vs major keys at 3.03 (`plots/analysis/major_vs_minor.png`). The top song was Eb minor. This might reflect that FMA's popular electronic/international tracks tend toward minor keys, or that ACE-Step produces more convincing minor-key music.
+
+### 4. BPM sweet spots exist per genre
+
+The heatmaps (`plots/per_genre/`) show clear BPM preferences: EDM peaks at 126-138, Punjabi at 95-105, Pop at 124-128. Slower BPMs consistently underperformed. The scorer learned tempo-genre associations from FMA.
+
+### 5. The generate-and-filter approach works for relative ranking
+
+Even though absolute scores are modest (2-5 range), the scorer reliably differentiates within a batch. The best song in each test does sound more produced and cohesive than the worst. For filtering — generating 20 and keeping 5 — the scorer adds genuine value over random selection.
+
+### 6. The bottleneck is data, not model architecture
+
+The MLP trained in 30 seconds and beat all our targets. The issue is that FMA play counts are a noisy, skewed proxy for quality. Better labels (Spotify engagement data, human preferences) would improve results far more than a fancier neural network.
+
+### 7. Practical takeaway
+
+If you're generating AI music at scale, a MERT + MLP scorer is a cheap, fast filter that eliminates the worst outputs. But don't trust its absolute scores — use it for relative ranking within a batch, not as an objective quality measure. And expect genre bias: the scorer has opinions that reflect its training data, not universal musical taste.
+
 ## Limitations
 
 - **FMA popularity ≠ mainstream popularity.** FMA is indie/unsigned artists on a free archive. The model learns "music that people actively seek out on a niche platform" not "Billboard chart hits." This might actually be *better* for our purposes — it's measuring organic quality without marketing budget bias. But it means the model's "taste" reflects FMA's audience, not the general public.
