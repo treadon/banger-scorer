@@ -22,7 +22,7 @@ The best AI songs — melodic techno, Punjabi bhangra, Bollywood dance numbers �
 
 **The key insight: genre matters more than anything else.** AI excels at genres with repetitive structure and strong beats (EDM, Punjabi, Bollywood) and struggles with genres requiring emotional subtlety (R&B, acoustic folk). Choosing the right genre is the single biggest lever for AI music quality.
 
-**The solution: don't make AI music better — make the filtering smarter.** By scoring and ranking AI output automatically, we can surface the best 10-20% and discard the rest. Data-driven parameter optimization then pushes the hit rate even higher.
+**AI music needs to get better — but until it does, smarter filtering helps.** By scoring and ranking AI output automatically, we can surface the best 10-20% and discard the rest. Data-driven parameter optimization pushes the hit rate even higher. Long term, the scorer can also serve as a reward model to train generators to produce better music in the first place.
 
 ![Score distribution across all genres](https://raw.githubusercontent.com/treadon/banger-scorer/main/plots/overview/global_scatter.png)
 
