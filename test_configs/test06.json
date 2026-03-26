@@ -1,0 +1,15 @@
+{
+  "test_id": "test06",
+  "test_name": "Punjabi / Bhangra",
+  "language": "pa",
+  "seed_start": 600,
+  "captions": [
+    "modern Punjabi pop, heavy dhol, bass-heavy beat, energetic male vocals, party anthem, bhangra fusion, celebratory",
+    "Punjabi hip hop, trap beats with dhol, aggressive flow, bass drops, urban Punjabi, hard-hitting, street energy",
+    "bhangra dance track, traditional tumbi, dhol rhythm, high energy, wedding party vibes, joyful, uplifting chorus",
+    "modern desi pop, Punjabi vocals, electronic production, catchy melody, club-ready, fusion of east and west"
+  ],
+  "bpms": [95, 105, 115, 125, 135],
+  "keys": ["G major", "D major", "A major", "C major", "E minor"],
+  "lyrics": "[Verse 1]\nDhol vajje te nachdi kudiye\nSaara shehar nachda tere naal\nPatiala shahi suit tera\nTaare vi sharmaye tere naal\n\n[Chorus]\nBalle balle nach le\nPairon vich ghungroo bajale\nAaj di raat hai apni\nDuniya nu bhulake nachle\n\n[Verse 2]\nGabru jawan dil da ni\nTere liye pagal hoye\nDJ utte gaana vajje\nSab nachde hoye hoye\n\n[Chorus]\nBalle balle nach le\nPairon vich ghungroo bajale\nAaj di raat hai apni\nDuniya nu bhulake nachle\n\n[Outro]\nBalle balle\nHoye hoye nach le"
+}

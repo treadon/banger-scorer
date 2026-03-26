@@ -1,0 +1,160 @@
+{
+  "total_songs": 200,
+  "overall_score_min": 1.9825326204299927,
+  "overall_score_max": 5.293098449707031,
+  "overall_score_mean": 3.1651605659723283,
+  "top_10": [
+    {
+      "seed": 907,
+      "bpm": 130,
+      "key": "Eb minor",
+      "caption": "melodic techno, driving beat, atmospheric textures, dark and dreamy, analog synths, pulsing bass, rave energy",
+      "gen_time": 105.565269947052,
+      "score": 5.293098449707031,
+      "test_id": "test09",
+      "test_name": "Electronic / EDM"
+    },
+    {
+      "seed": 917,
+      "bpm": 138,
+      "key": "F minor",
+      "caption": "deep house, groovy bassline, subtle vocals, warm chords, hypnotic rhythm, underground club, late night",
+      "gen_time": 106.07793688774109,
+      "score": 4.902508735656738,
+      "test_id": "test09",
+      "test_name": "Electronic / EDM"
+    },
+    {
+      "seed": 910,
+      "bpm": 126,
+      "key": "Eb minor",
+      "caption": "progressive house, building pads, euphoric drop, four on the floor, festival anthem, soaring synth lead, hands up",
+      "gen_time": 102.83413410186768,
+      "score": 4.867621898651123,
+      "test_id": "test09",
+      "test_name": "Electronic / EDM"
+    },
+    {
+      "seed": 906,
+      "bpm": 138,
+      "key": "Bb minor",
+      "caption": "melodic techno, driving beat, atmospheric textures, dark and dreamy, analog synths, pulsing bass, rave energy",
+      "gen_time": 104.29079675674438,
+      "score": 4.658178806304932,
+      "test_id": "test09",
+      "test_name": "Electronic / EDM"
+    },
+    {
+      "seed": 717,
+      "bpm": 120,
+      "key": "A minor",
+      "caption": "modern C-pop, emotional ballad, piano-driven, tender vocals, cinematic strings, heartfelt, bittersweet melody",
+      "gen_time": 100.65742683410645,
+      "score": 4.474253177642822,
+      "test_id": "test07",
+      "test_name": "Chinese Pop (C-Pop)"
+    },
+    {
+      "seed": 500,
+      "bpm": 120,
+      "key": "E minor",
+      "caption": "Bollywood item song, heavy bass, club-ready beat, female vocals, glamorous, high energy, brass hits, dance floor",
+      "gen_time": 112.57971692085266,
+      "score": 4.3783416748046875,
+      "test_id": "test05",
+      "test_name": "Bollywood / Hindi Pop"
+    },
+    {
+      "seed": 915,
+      "bpm": 126,
+      "key": "Bb minor",
+      "caption": "deep house, groovy bassline, subtle vocals, warm chords, hypnotic rhythm, underground club, late night",
+      "gen_time": 104.38756608963013,
+      "score": 4.3180413246154785,
+      "test_id": "test09",
+      "test_name": "Electronic / EDM"
+    },
+    {
+      "seed": 100,
+      "bpm": 128,
+      "key": "D major",
+      "caption": "upbeat electronic pop, pulsing beat, shimmering arpeggios, soaring vocals, anthemic chorus, festival energy, bright and airy",
+      "gen_time": 126.74959111213684,
+      "score": 4.309471130371094,
+      "test_id": "test02",
+      "test_name": "test02"
+    },
+    {
+      "seed": 510,
+      "bpm": 130,
+      "key": "D minor",
+      "caption": "modern Bollywood dance number, energetic beat, desi bass, catchy hook, festive, dhol accents, bright synths, party anthem",
+      "gen_time": 109.55409693717957,
+      "score": 4.283642768859863,
+      "test_id": "test05",
+      "test_name": "Bollywood / Hindi Pop"
+    },
+    {
+      "seed": 615,
+      "bpm": 95,
+      "key": "C major",
+      "caption": "bhangra dance track, traditional tumbi, dhol rhythm, high energy, wedding party vibes, joyful, uplifting chorus",
+      "gen_time": 109.47938585281372,
+      "score": 4.260504245758057,
+      "test_id": "test06",
+      "test_name": "Punjabi / Bhangra"
+    }
+  ],
+  "bottom_5": [
+    {
+      "seed": 714,
+      "bpm": 90,
+      "key": "D minor",
+      "caption": "Chinese R&B, smooth groove, atmospheric synths, soft vocals, urban night vibes, jazzy chords, modern",
+      "gen_time": 105.09668207168579,
+      "score": 2.1313419342041016,
+      "test_id": "test07",
+      "test_name": "Chinese Pop (C-Pop)"
+    },
+    {
+      "seed": 1004,
+      "bpm": 125,
+      "key": "A major",
+      "caption": "indie folk, soft vocals, acoustic guitar, gentle percussion, dreamy, pastoral, introspective, bittersweet melody",
+      "gen_time": 110.34731316566467,
+      "score": 2.034022092819214,
+      "test_id": "test10",
+      "test_name": "Acoustic / Folk"
+    },
+    {
+      "seed": 807,
+      "bpm": 140,
+      "key": "D minor",
+      "caption": "post-punk revival, angular guitar riffs, tight bass, urgent vocals, dark energy, new wave synths, danceable rock",
+      "gen_time": 103.56477999687195,
+      "score": 2.022594928741455,
+      "test_id": "test08",
+      "test_name": "Rock / Alternative"
+    },
+    {
+      "seed": 113,
+      "bpm": 128,
+      "key": "G major",
+      "caption": "feel-good funk pop, groovy bass, upbeat rhythm guitar, claps, sunny disposition, infectious hook, retro vibes",
+      "gen_time": 119.78038191795349,
+      "score": 1.9849319458007812,
+      "test_id": "test02",
+      "test_name": "test02"
+    },
+    {
+      "seed": 115,
+      "bpm": 135,
+      "key": "F major",
+      "caption": "upbeat pop, catchy melody, bright synths, female vocals, danceable, feel-good summer anthem, major key, polished production",
+      "gen_time": 126.363765001297,
+      "score": 1.9825326204299927,
+      "test_id": "test02",
+      "test_name": "test02"
+    }
+  ]
+}

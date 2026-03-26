@@ -520,8 +520,18 @@ MPS (Metal) doesn't support concurrent streams like CUDA does. You can't run two
 - The model converged extremely fast — loss dropped from 4.5 to 1.4 in the first 2 epochs, then gradually to ~0.1 by epoch 25. But validation MAE plateaued at epoch 9, meaning later improvements were overfitting.
 - Scatter plot shows clear positive trend but most predictions compressed into 1-5 range. The model has learned the central tendency well but can't differentiate the extremes.
 
+### Test 02: Upbeat Pop/Dance (20 songs)
+- 20/20 generated, zero failures
+- Score range: **1.98 to 4.31** — significantly wider than hip hop (2.52–3.38)
+- **4.31 is our highest score yet** — the scorer clearly prefers upbeat pop with high energy over hip hop
+- Best combo: bpm=128, D major, upbeat pop with bright synths (seed=100)
+- Worst combo: bpm=128/135, G/F major, scored 1.98 — some pop attempts fell flat
+- **128 BPM dominated the top rankings** — classic dance pop tempo
+- Major keys (D, C, A, F) — brighter tonality correlated with higher scores
+- The scorer's FMA training data likely has more pop representation than hip hop, which explains the genre bias
+
 ### Autoresearch Experiments
-*(TBD — will log each experiment's architecture changes and results)*
+*(Skipped — baseline already exceeded targets, bottleneck is data quality not model architecture)*
 
 ### Generate-and-Filter Test: 20 Songs
 
@@ -570,15 +580,64 @@ MPS (Metal) doesn't support concurrent streams like CUDA does. You can't run two
 - After MP3 conversion (192kbps): 87 MB total (~4.3 MB per song)
 - 87% size reduction with minimal perceptible quality loss for evaluation purposes
 
+### Tests 03–10 Summary
+
+All tests ran 20 songs each, one subprocess per song, zero crashes across 160 songs (tests 03-10). Combined with tests 01-02: **200 songs generated total, 200/200 successful.**
+
+| Rank | Genre | Language | Range | Mean | Best |
+|------|-------|----------|-------|------|------|
+| 1 | **Electronic/EDM** | EN | 2.80–**5.29** | 3.71 | **5.29** |
+| 2 | **Punjabi/Bhangra** | PA | 2.79–4.26 | **3.77** | 4.26 |
+| 3 | **Bollywood** | HI | 2.70–4.38 | 3.53 | 4.38 |
+| 4 | C-Pop | ZH | 2.13–4.47 | 3.20 | 4.47 |
+| 5 | Latin/Reggaeton | ES | 2.36–3.90 | 3.19 | 3.90 |
+| 6 | Pop/Dance | EN | 1.98–4.31 | 3.05 | 4.31 |
+| 7 | Rock/Alternative | EN | 2.02–3.66 | 3.03 | 3.66 |
+| 8 | Hip Hop | EN | 2.52–3.38 | 2.92 | 3.38 |
+| 9 | Acoustic/Folk | EN | 2.03–3.31 | 2.63 | 3.31 |
+| 10 | R&B/Soul | EN | 2.14–3.21 | 2.62 | 3.21 |
+
+**Overall best: Melodic techno, 130 BPM, Eb minor, seed 907 — scored 5.29/10**
+
+5 of the top 10 songs overall were EDM. The scorer heavily favors:
+- **Rhythmically consistent, driving beats** (EDM, Punjabi dhol, Bollywood dance)
+- **Higher energy** — slow R&B and acoustic folk scored lowest
+- **Electronic production** — clean, loud, repetitive patterns match what FMA's popular electronic tracks sound like
+
+The scorer essentially learned "popular FMA music has strong beats and high energy" — which is correct for that dataset but doesn't capture the full picture of what makes music good.
+
+### Best Overall — Top 10 Across 200 Songs
+
+| Rank | Score | Genre | BPM | Key | Style |
+|------|-------|-------|-----|-----|-------|
+| #1 | **5.29** | EDM | 130 | Eb minor | Melodic techno, atmospheric, driving |
+| #2 | **4.90** | EDM | 138 | F minor | Deep house, groovy bassline |
+| #3 | **4.87** | EDM | 126 | Eb minor | Progressive house, euphoric drop |
+| #4 | **4.66** | EDM | 138 | Bb minor | Melodic techno, dark and dreamy |
+| #5 | **4.47** | C-Pop | 120 | A minor | Emotional ballad, piano-driven |
+| #6 | **4.38** | Bollywood | 120 | E minor | Club-ready beat, heavy bass |
+| #7 | **4.32** | EDM | 126 | Bb minor | Deep house, warm chords |
+| #8 | **4.31** | Pop/Dance | 128 | D major | Electronic pop, shimmering arpeggios |
+| #9 | **4.28** | Bollywood | 130 | D minor | Energetic dance number, desi bass |
+| #10 | **4.26** | Punjabi | 95 | C major | Bhangra, traditional tumbi, dhol |
+
 ## What We Learned
 
-*(To be filled in after the project)*
+1. **MERT + MLP can predict popularity.** Test MAE of 0.858 on a 0-10 scale, Spearman correlation 0.468. Not an oracle, but a useful heuristic for relative ranking.
 
-1. **TBD** — How well does MERT + MLP predict popularity?
-2. **TBD** — Does the scorer actually prefer "better" songs?
-3. **TBD** — How much does filtering improve ACE-Step output quality?
-4. **TBD** — What did the autoresearch agent discover?
-5. **TBD** — Where does the model fail? What kinds of songs does it misjudge?
+2. **The scorer does differentiate quality.** Across 200 songs, scores ranged from 1.98 to 5.29. Parameter variations (BPM, key, caption style) produced meaningful score differences within each genre — the scorer isn't random.
+
+3. **Genre bias is real and predictable.** The scorer strongly prefers high-energy electronic music over mellow acoustic/R&B. This reflects FMA's popularity distribution, not absolute musical quality. A production-quality R&B ballad might be "better" than a generic techno loop, but the scorer can't tell.
+
+4. **The bottleneck is labels, not architecture.** We skipped the autoresearch loop because the baseline model already beat our targets. Better training data (Spotify engagement metrics, more songs, human preference labels) would improve results far more than a fancier MLP.
+
+5. **Varying musical parameters matters more than varying random seeds.** Caption style, BPM, and key produce wider score distributions than just changing the diffusion seed. This makes sense — the seed varies texture/timbre while the parameters vary the fundamental musical properties.
+
+6. **One subprocess per song is the reliable approach for Apple Silicon.** Batch generation hangs after 2-3 songs due to MPS memory/state accumulation. Fresh process per song adds ~30s overhead but never crashes. 200/200 success rate.
+
+7. **AI-generated music scores below average on a real-music scale.** Our best score (5.29) is at the 67th percentile of FMA — "above average" but not exceptional. Most generated songs landed at the median (3.0-3.5). The scorer correctly identifies that AI music doesn't yet match the quality distribution of human-made music.
+
+8. **Multilingual generation works.** Hindi, Punjabi, Spanish, and Chinese lyrics all generated successfully. Interestingly, Punjabi and Bollywood scored highest among all genres — ACE-Step may have strong South Asian music training data, or the rhythmic patterns (dhol, desi bass) align well with what the scorer learned from FMA's "International" genre category.
 
 ## Limitations
 

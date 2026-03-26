@@ -1,0 +1,15 @@
+{
+  "test_id": "test08",
+  "test_name": "Rock / Alternative",
+  "language": "en",
+  "seed_start": 800,
+  "captions": [
+    "indie rock, jangly guitars, driving drums, raw vocals, lo-fi warmth, garage energy, melodic hooks, anthemic",
+    "alternative rock, heavy distortion, powerful drums, emotional singing, dynamic quiet-loud shifts, grunge influence",
+    "post-punk revival, angular guitar riffs, tight bass, urgent vocals, dark energy, new wave synths, danceable rock",
+    "classic rock, bluesy guitar solo, pounding drums, raspy vocals, arena-ready, powerful riffs, stadium anthem"
+  ],
+  "bpms": [120, 130, 140, 150, 160],
+  "keys": ["E minor", "A minor", "D minor", "G minor", "B minor"],
+  "lyrics": "[Verse 1]\nBurning through the static on a dead-end road\nEvery sign is broken but I'm in the zone\nTurn the amplifier up until it bleeds\nThis is all I've got and all I'll ever need\n\n[Chorus]\nWe're not gonna fade away\nWe're not gonna play it safe\nLight the fuse and watch it blow\nThis is everything we know\n\n[Verse 2]\nMidnight in the basement with the volume high\nNeighbors calling cops but we don't care why\nEvery broken string is just another scar\nWe're not here to be perfect, just to go too far\n\n[Chorus]\nWe're not gonna fade away\nWe're not gonna play it safe\nLight the fuse and watch it blow\nThis is everything we know\n\n[Bridge]\nLouder, louder, louder\nUntil the walls come down\n\n[Outro]\nWe're not gonna fade away\nNot today"
+}

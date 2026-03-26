@@ -1,0 +1,15 @@
+{
+  "test_id": "test09",
+  "test_name": "Electronic / EDM",
+  "language": "en",
+  "seed_start": 900,
+  "captions": [
+    "progressive house, building pads, euphoric drop, four on the floor, festival anthem, soaring synth lead, hands up",
+    "deep house, groovy bassline, subtle vocals, warm chords, hypnotic rhythm, underground club, late night",
+    "melodic techno, driving beat, atmospheric textures, dark and dreamy, analog synths, pulsing bass, rave energy",
+    "future bass, lush synth chords, heavy drops, chopped vocal samples, colorful production, emotional, festival ready"
+  ],
+  "bpms": [122, 126, 130, 138, 150],
+  "keys": ["A minor", "F minor", "C minor", "Eb minor", "Bb minor"],
+  "lyrics": "[Build]\nFeel the bass beneath your feet\nLet the rhythm take control\nEvery heartbeat syncs the beat\nLose yourself and free your soul\n\n[Drop]\n\n[Verse]\nLasers cutting through the haze\nBass is shaking every wall\nLost inside this endless maze\nWe don't need a reason at all\n\n[Build]\nHands up, reach for the sky\nFeel the energy rise\nThis is where we come alive\nUnderneath the neon lights\n\n[Drop]\n\n[Outro]\nOne more time\nFeel it rise\nOne more time"
+}

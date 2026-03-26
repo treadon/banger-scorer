@@ -1,0 +1,15 @@
+{
+  "test_id": "test03",
+  "test_name": "R&B / Soul",
+  "language": "en",
+  "seed_start": 300,
+  "captions": [
+    "smooth R&B, silky vocals, lush harmonies, slow groove, romantic, warm keys, subtle bass, late night vibes",
+    "neo-soul, live instruments, warm Rhodes piano, organic drums, soulful singing, jazzy chords, mellow groove",
+    "modern R&B, trap-influenced beat, atmospheric synths, emotional male vocals, moody, reverb-heavy, confessional",
+    "classic slow jam, smooth bass, gentle percussion, tender vocals, intimate, candlelit atmosphere, string accents"
+  ],
+  "bpms": [65, 72, 80, 88, 95],
+  "keys": ["Eb major", "Ab major", "Db major", "Bb minor", "F minor"],
+  "lyrics": "[Verse 1]\nMoonlight on your skin, I can't look away\nEvery little thing you do makes me wanna stay\nPull me closer, whisper something real\nShow me what it's like to let somebody feel\n\n[Chorus]\nFalling into you like I never did before\nEvery touch a little deeper, leave me wanting more\nDon't let go, don't let go tonight\nKeep me in this moment, everything feels right\n\n[Verse 2]\nSilk sheets and slow songs playing through the dark\nYour voice the only melody that moves my heart\nI could stay forever in this space we made\nWhere the world outside just slowly fades\n\n[Chorus]\nFalling into you like I never did before\nEvery touch a little deeper, leave me wanting more\nDon't let go, don't let go tonight\nKeep me in this moment, everything feels right\n\n[Outro]\nDon't let go\nStay right here with me"
+}

@@ -1,0 +1,15 @@
+{
+  "test_id": "test04",
+  "test_name": "Latin / Reggaeton",
+  "language": "es",
+  "seed_start": 400,
+  "captions": [
+    "reggaeton, dembow beat, heavy bass, catchy hook, latin club music, energetic, perreo, urban latin",
+    "latin pop, tropical vibes, bright percussion, romantic melody, danceable, summer feel, acoustic guitar accents",
+    "modern reggaeton, trap latino, dark 808 bass, auto-tune vocals, moody, sensual, midnight vibes",
+    "tropical house meets reggaeton, uplifting melody, steel drums, dancehall influence, feel-good party anthem"
+  ],
+  "bpms": [90, 95, 100, 105, 110],
+  "keys": ["A minor", "D minor", "E minor", "G minor", "C minor"],
+  "lyrics": "[Verso 1]\nLa noche está encendida, el ritmo no para\nTu cuerpo se mueve como si volara\nBajo las luces todo brilla más\nContigo a mi lado no quiero nada más\n\n[Coro]\nBaila, baila, siente el fuego\nDéjate llevar por este juego\nTú y yo en la pista hasta el amanecer\nEsta noche no vamos a perder\n\n[Verso 2]\nEl bajo retumba, la calle lo siente\nTu sonrisa brilla entre toda la gente\nNo hace falta hablar, el beat dice todo\nMoviendo las caderas de un modo a otro modo\n\n[Coro]\nBaila, baila, siente el fuego\nDéjate llevar por este juego\nTú y yo en la pista hasta el amanecer\nEsta noche no vamos a perder\n\n[Outro]\nBaila, baila\nHasta que salga el sol"
+}

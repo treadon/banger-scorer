@@ -1,0 +1,15 @@
+{
+  "test_id": "test10",
+  "test_name": "Acoustic / Folk",
+  "language": "en",
+  "seed_start": 1000,
+  "captions": [
+    "acoustic folk, fingerpicked guitar, warm male vocals, storytelling, campfire feel, intimate, Americana, harmonica",
+    "indie folk, soft vocals, acoustic guitar, gentle percussion, dreamy, pastoral, introspective, bittersweet melody",
+    "singer-songwriter, raw and honest vocals, simple guitar accompaniment, emotional, stripped-down, confessional",
+    "country folk, acoustic guitar, fiddle, warm harmonies, open road feeling, heartland, nostalgic, front porch vibes"
+  ],
+  "bpms": [85, 95, 105, 115, 125],
+  "keys": ["G major", "C major", "D major", "A major", "E major"],
+  "lyrics": "[Verse 1]\nDust on the dashboard, miles behind\nLeft everything I knew to clear my mind\nWindshield full of stars and open sky\nSometimes you gotta leave to find out why\n\n[Chorus]\nRolling on, rolling on\nChasing something I can't name\nRolling on, rolling on\nNothing out here stays the same\n\n[Verse 2]\nSmall town diner, coffee black\nStrangers telling stories, no looking back\nEvery mile a little more unwind\nLeaving all the heavy stuff behind\n\n[Chorus]\nRolling on, rolling on\nChasing something I can't name\nRolling on, rolling on\nNothing out here stays the same\n\n[Bridge]\nMaybe home is not a place\nMaybe home is just a feeling\nYou carry with you through the days\n\n[Outro]\nRolling on\nRolling on"
+}

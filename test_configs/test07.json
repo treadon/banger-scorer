@@ -1,0 +1,15 @@
+{
+  "test_id": "test07",
+  "test_name": "Chinese Pop (C-Pop)",
+  "language": "zh",
+  "seed_start": 700,
+  "captions": [
+    "modern C-pop, emotional ballad, piano-driven, tender vocals, cinematic strings, heartfelt, bittersweet melody",
+    "upbeat Chinese pop, dance beat, catchy synth melody, youthful energy, bright production, idol pop style",
+    "Chinese R&B, smooth groove, atmospheric synths, soft vocals, urban night vibes, jazzy chords, modern",
+    "Chinese rock-pop, electric guitar, driving beat, powerful vocals, anthemic chorus, stadium energy, inspirational"
+  ],
+  "bpms": [75, 90, 105, 120, 130],
+  "keys": ["C major", "G major", "F major", "A minor", "D minor"],
+  "lyrics": "[Verse 1]\n月光洒在窗前\n思念像风吹过脸\n你的笑容在眼前\n温暖了整个冬天\n\n[Chorus]\n让我陪你到永远\n穿过风雨和晴天\n每一步都不孤单\n因为有你在身边\n\n[Verse 2]\n城市的灯火闪烁\n我们走过每条街\n不管未来多遥远\n牵着手就不会变\n\n[Chorus]\n让我陪你到永远\n穿过风雨和晴天\n每一步都不孤单\n因为有你在身边\n\n[Bridge]\n时间带不走的\n是我们的故事\n刻在心里最深处\n\n[Outro]\n永远在你身边\n不会改变"
+}

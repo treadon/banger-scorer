@@ -1,0 +1,15 @@
+{
+  "test_id": "test05",
+  "test_name": "Bollywood / Hindi Pop",
+  "language": "hi",
+  "seed_start": 500,
+  "captions": [
+    "modern Bollywood dance number, energetic beat, desi bass, catchy hook, festive, dhol accents, bright synths, party anthem",
+    "Hindi pop ballad, emotional melody, soft piano, strings, heartfelt male vocals, romantic, cinematic feel",
+    "Bollywood item song, heavy bass, club-ready beat, female vocals, glamorous, high energy, brass hits, dance floor",
+    "indie Hindi pop, acoustic guitar, modern production, urban desi, chill vibes, melodic, heartfelt storytelling"
+  ],
+  "bpms": [100, 110, 120, 130, 140],
+  "keys": ["C minor", "D minor", "A minor", "E minor", "G major"],
+  "lyrics": "[Verse 1]\nDil ki dhadkan tez ho gayi\nTeri aankhon mein kho gayi\nHar pal tera intezaar hai\nTu hi mera pyaar hai\n\n[Chorus]\nNachle nachle saari raat\nChhod de saari baat\nBas tu aur main\nDuniya bhool jaye hum dono\nNachle nachle saari raat\n\n[Verse 2]\nDJ bajaye gaana mera\nNaache saara shehar tera\nBijli si chamke tu jab muskuraye\nSab kuch ruk jaaye\n\n[Chorus]\nNachle nachle saari raat\nChhod de saari baat\nBas tu aur main\nDuniya bhool jaye hum dono\nNachle nachle saari raat\n\n[Outro]\nNachle nachle\nBas nachle nachle"
+}
