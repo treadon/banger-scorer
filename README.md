@@ -58,12 +58,12 @@ Inference:
 
 ### Scorer Performance
 
-| Metric | Value | Target |
-|--------|-------|--------|
-| Test MAE | **0.858** | < 1.5 |
-| Spearman Correlation | **0.468** | > 0.4 |
-| Training Time | **30 seconds** | — |
-| Model Size | **2.6 MB** | < 50 MB |
+| Metric | Value | Target | What it means |
+|--------|-------|--------|---------------|
+| Test MAE | **0.858** | < 1.5 | Mean Absolute Error — on average, predictions are off by 0.86 points on a 0-10 scale |
+| Spearman Correlation | **0.468** | > 0.4 | How well the scorer's ranking agrees with actual popularity (1.0 = perfect, 0 = random) |
+| Training Time | **30 seconds** | — | Time to train the MLP on cached MERT embeddings (M4 Pro MPS) |
+| Model Size | **2.6 MB** | < 50 MB | Small enough to score songs instantly — the bottleneck is generation, not scoring |
 
 ### 10-Genre Test (200 songs)
 
