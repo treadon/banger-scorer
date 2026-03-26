@@ -28,18 +28,23 @@ The best AI songs — melodic techno, Punjabi bhangra, Bollywood dance numbers �
 
 ### Listen for Yourself
 
-Hear the best and worst songs from each genre on HuggingFace (built-in audio player):
+Can you hear the difference between the scorer's best and worst? Press play (30-second clips):
 
-**[Browse and play all 230 songs on HuggingFace](https://huggingface.co/datasets/treadon/banger-scorer-generated-songs?row=0)**
+**#1 — Best Overall: EDM, 130 BPM, Eb minor (Score: 5.29)**
 
-| | Song | Score | Genre | BPM | Key |
-|---|------|-------|-------|-----|-----|
-| #1 | [Best overall](https://huggingface.co/datasets/treadon/banger-scorer-generated-songs/viewer?row=0&sort%5Bcolumn%5D=banger_score&sort%5Bdirection%5D=desc) | **5.29** | EDM | 130 | Eb minor |
-| #2 | [Runner up](https://huggingface.co/datasets/treadon/banger-scorer-generated-songs/viewer?row=1&sort%5Bcolumn%5D=banger_score&sort%5Bdirection%5D=desc) | **4.90** | EDM | 138 | F minor |
-| #3 | [3rd place](https://huggingface.co/datasets/treadon/banger-scorer-generated-songs/viewer?row=2&sort%5Bcolumn%5D=banger_score&sort%5Bdirection%5D=desc) | **4.87** | EDM | 126 | Eb minor |
-| #last | [Worst overall](https://huggingface.co/datasets/treadon/banger-scorer-generated-songs/viewer?row=0&sort%5Bcolumn%5D=banger_score&sort%5Bdirection%5D=asc) | **1.98** | Pop | 128 | G major |
+https://github.com/user-attachments/assets/best_1_edm
 
-> Sort by `banger_score` descending on HuggingFace to hear the best first, or ascending for the worst. Can you tell the difference?
+<video src="https://raw.githubusercontent.com/treadon/banger-scorer/main/assets/audio/best_1_edm_score5.3.mp4" controls width="100%"></video>
+
+**#2 — Best Punjabi/Bhangra: 95 BPM, C major (Score: 4.26)**
+
+<video src="https://raw.githubusercontent.com/treadon/banger-scorer/main/assets/audio/best_2_punjabi_score4.3.mp4" controls width="100%"></video>
+
+**#last — Worst Overall: Pop, 135 BPM, F major (Score: 1.98)**
+
+<video src="https://raw.githubusercontent.com/treadon/banger-scorer/main/assets/audio/worst_pop_score2.0.mp4" controls width="100%"></video>
+
+> **[Browse and play all 230 full-length songs on HuggingFace](https://huggingface.co/datasets/treadon/banger-scorer-generated-songs)** — sort by `banger_score` to hear best vs worst.
 
 ## How It Works
 
