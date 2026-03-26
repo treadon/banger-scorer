@@ -8,7 +8,23 @@ We generated **230 songs across 10 genres in 6 languages**, scored them all, ana
 
 Everything runs locally on a MacBook Pro. No cloud GPUs. No API costs.
 
-![Global scatter plot showing scores across all genres](https://raw.githubusercontent.com/treadon/banger-scorer/main/plots/overview/global_scatter.png)
+## AI Music vs Human Music: The Quality Gap
+
+We trained our scorer on 8,000 real songs from the Free Music Archive, then used it to evaluate 230 AI-generated songs. The results tell a clear story:
+
+![AI vs Human Music Quality Gap](https://raw.githubusercontent.com/treadon/banger-scorer/main/plots/hero/ai_vs_human_quality_gap.png)
+
+**AI music lives in the middle of the human distribution.** The average AI-generated song scores at the 42nd-67th percentile of real music depending on genre — not bad, but not exceptional. Real music has a long tail of truly great songs (scores 7-10) that AI can't yet reach.
+
+The best AI songs — melodic techno, Punjabi bhangra, Bollywood dance numbers — reach the **94th percentile** of human music. But those are outliers. Most AI output is competent mediocrity: it sounds like music, has all the right parts, but doesn't move you.
+
+![Where AI ranks among human music by genre](https://raw.githubusercontent.com/treadon/banger-scorer/main/plots/hero/ai_vs_human_percentile.png)
+
+**The key insight: genre matters more than anything else.** AI excels at genres with repetitive structure and strong beats (EDM, Punjabi, Bollywood) and struggles with genres requiring emotional subtlety (R&B, acoustic folk). Choosing the right genre is the single biggest lever for AI music quality.
+
+**The solution: don't make AI music better — make the filtering smarter.** By scoring and ranking AI output automatically, we can surface the best 10-20% and discard the rest. Data-driven parameter optimization then pushes the hit rate even higher.
+
+![Score distribution across all genres](https://raw.githubusercontent.com/treadon/banger-scorer/main/plots/overview/global_scatter.png)
 
 ## How It Works
 
