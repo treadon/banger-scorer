@@ -192,9 +192,11 @@ Everything runs on a MacBook Pro M4 Pro (64GB unified memory):
 
 ## Links
 
+- **Try it now**: [Banger Scorer Demo on HuggingFace Spaces](https://huggingface.co/spaces/treadon/banger-scorer-demo) — upload any song, get a score
 - **Blog Post**: [AI Music Is Good But Not Great](https://riteshkhanna.com/banger-scorer) *(coming soon)*
+- **Model**: [treadon/banger-scorer](https://huggingface.co/treadon/banger-scorer) — trained MLP weights
 - **Pre-computed Embeddings**: [treadon/fma-mert-embeddings](https://huggingface.co/datasets/treadon/fma-mert-embeddings)
-- **Generated Songs Dataset**: [treadon/banger-scorer-generated-songs](https://huggingface.co/datasets/treadon/banger-scorer-generated-songs) *(coming soon)*
+- **Generated Songs Dataset**: [treadon/banger-scorer-generated-songs](https://huggingface.co/datasets/treadon/banger-scorer-generated-songs)
 - **Full Technical Writeup**: [WRITEUP.md](WRITEUP.md)
 
 ## Built With
