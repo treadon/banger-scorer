@@ -652,38 +652,57 @@ The scorer essentially learned "popular FMA music has strong beats and high ener
 
 ## Conclusions
 
-**The model works, but with clear biases and limitations.**
+**The model works, and data-driven parameter optimization meaningfully improves output quality.**
 
 ### 1. The scorer learned "energy = popular"
 
-The strongest signal the model learned is simple: high energy, driving rhythms, and loud production correlate with FMA popularity. The ranking across 200 songs proves this:
+The strongest signal the model learned is simple: high energy, driving rhythms, and loud production correlate with FMA popularity. The ranking across 200 random songs proves this:
 - **Top tier (mean 3.5+):** Punjabi/Bhangra, EDM, Bollywood — all beat-driven, high energy
 - **Bottom tier (mean 2.6):** R&B/Soul, Acoustic/Folk — mellow, subtle, nuanced
 - The "traditional" caption style (dhol, tumbi, bhangra) scored highest across all style keywords (mean 3.8)
 
-### 2. AI music is "average" by real-music standards
+### 2. Data-driven optimization works: 4x hit rate improvement
 
-The generated-vs-training plot (`plots/training/generated_vs_training.png`) is the most telling: AI songs cluster tightly around the FMA mean (3.17 generated vs 3.27 FMA), but real music has a long right tail up to 10. Our best song (5.29 EDM) sits at the 67th percentile — above average but nowhere near exceptional. AI music generation produces competent mediocrity, not bangers.
+We ran 200 songs with random parameters to learn what scores well, then generated 30 more using only the winning combos. Results (`plots/overview/optimization_impact.png`):
 
-### 3. Minor keys outperformed major keys
+| Metric | Random (200 songs) | Optimized (30 songs) | Improvement |
+|--------|-------------------|---------------------|-------------|
+| Mean score | 3.17 | **3.48** | +10% |
+| Songs >= 3.5 | 20% | **60%** | 3x |
+| Songs >= 4.0 | 5% | **20%** | 4x |
+| Top score | 5.29 | 5.29 | Same ceiling |
 
-Surprising: minor keys scored 3.26 mean vs major keys at 3.03 (`plots/analysis/major_vs_minor.png`). The top song was Eb minor. This might reflect that FMA's popular electronic/international tracks tend toward minor keys, or that ACE-Step produces more convincing minor-key music.
+The optimization didn't raise the ceiling (5.29 seems to be the scorer's practical max for AI-generated music) but it **dramatically raised the floor and consistency**. The winning formula: dark electronic/industrial styles, 128-130 BPM, D minor or Bb minor.
 
-### 4. BPM sweet spots exist per genre
+### 3. AI music is "average" by real-music standards
 
-The heatmaps (`plots/per_genre/`) show clear BPM preferences: EDM peaks at 126-138, Punjabi at 95-105, Pop at 124-128. Slower BPMs consistently underperformed. The scorer learned tempo-genre associations from FMA.
+The generated-vs-training plot (`plots/training/generated_vs_training.png`) is the most telling: AI songs cluster tightly around the FMA mean (3.17 generated vs 3.27 FMA), but real music has a long right tail up to 10. Even optimized generation peaks at 5.29 (67th percentile). AI music generation produces competent mediocrity, not true bangers — but it's improving.
 
-### 5. The generate-and-filter approach works for relative ranking
+### 4. Minor keys outperformed major keys
 
-Even though absolute scores are modest (2-5 range), the scorer reliably differentiates within a batch. The best song in each test does sound more produced and cohesive than the worst. For filtering — generating 20 and keeping 5 — the scorer adds genuine value over random selection.
+Minor keys scored 3.26 mean vs major keys at 3.03 (`plots/analysis/major_vs_minor.png`). All top-5 overall songs were in minor keys. This might reflect that FMA's popular electronic/international tracks tend toward minor keys, or that ACE-Step produces more convincing minor-key music. The banger run used only minor keys, which contributed to its higher mean.
 
-### 6. The bottleneck is data, not model architecture
+### 5. BPM sweet spots exist per genre
 
-The MLP trained in 30 seconds and beat all our targets. The issue is that FMA play counts are a noisy, skewed proxy for quality. Better labels (Spotify engagement data, human preferences) would improve results far more than a fancier neural network.
+The heatmaps (`plots/per_genre/`) show clear BPM preferences: EDM peaks at 126-138, Punjabi at 95-105, Pop at 124-128. Slower BPMs (< 85) consistently underperformed across all genres. The scorer learned tempo-genre associations from FMA.
 
-### 7. Practical takeaway
+### 6. The generate-and-filter approach works for relative ranking
 
-If you're generating AI music at scale, a MERT + MLP scorer is a cheap, fast filter that eliminates the worst outputs. But don't trust its absolute scores — use it for relative ranking within a batch, not as an objective quality measure. And expect genre bias: the scorer has opinions that reflect its training data, not universal musical taste.
+Even though absolute scores are modest (2-5 range), the scorer reliably differentiates within a batch. The hit rate comparison (`plots/overview/hit_rate_comparison.png`) shows clear genre-by-genre differences that align with musical intuition — energetic genres score higher.
+
+### 7. The bottleneck is data, not model architecture
+
+The MLP trained in 30 seconds and beat all our targets. The issue is that FMA play counts are a noisy, skewed proxy for quality — only 45 tracks out of 8,000 score above 7 in the training data. Better labels (Spotify engagement data, human preferences) or more data (FMA-Large with 106K tracks) would improve results far more than a fancier neural network.
+
+### 8. The full loop — generate, evaluate, learn, optimize — is viable on consumer hardware
+
+The entire pipeline runs locally on a MacBook Pro M4 Pro:
+- Train the scorer: 30 seconds
+- Generate 230 songs across 10 genres + 1 optimized run: ~7 hours
+- Score all songs: ~8 minutes
+- Analyze, plot, iterate: seconds
+
+No cloud GPUs, no API costs, no data leaving the machine. The same approach could be applied to any generative model where quality is variable: image generation, voice synthesis, video creation. Train a cheap scorer on human preference data, generate a batch, filter.
 
 ## Limitations
 
