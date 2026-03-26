@@ -28,23 +28,17 @@ The best AI songs — melodic techno, Punjabi bhangra, Bollywood dance numbers �
 
 ### Listen for Yourself
 
-Can you hear the difference between the scorer's best and worst? Press play (30-second clips):
+Can you hear the difference between the scorer's best and worst? Play them directly on HuggingFace:
 
-**#1 — Best Overall: EDM, 130 BPM, Eb minor (Score: 5.29)**
+| Rank | Score | Genre | BPM | Key | Listen |
+|------|-------|-------|-----|-----|--------|
+| #1 | **5.29** | EDM (Melodic Techno) | 130 | Eb minor | [Play on HuggingFace](https://huggingface.co/datasets/treadon/banger-scorer-generated-songs/viewer?sort%5Bcolumn%5D=banger_score&sort%5Bdirection%5D=desc) |
+| #2 | **4.90** | EDM (Deep House) | 138 | F minor | [Play on HuggingFace](https://huggingface.co/datasets/treadon/banger-scorer-generated-songs/viewer?sort%5Bcolumn%5D=banger_score&sort%5Bdirection%5D=desc) |
+| #3 | **4.87** | EDM (Prog House) | 126 | Eb minor | [Play on HuggingFace](https://huggingface.co/datasets/treadon/banger-scorer-generated-songs/viewer?sort%5Bcolumn%5D=banger_score&sort%5Bdirection%5D=desc) |
+| ... | | | | | |
+| #last | **1.98** | Pop | 135 | F major | [Play on HuggingFace](https://huggingface.co/datasets/treadon/banger-scorer-generated-songs/viewer?sort%5Bcolumn%5D=banger_score&sort%5Bdirection%5D=asc) |
 
-https://github.com/user-attachments/assets/best_1_edm
-
-<video src="https://raw.githubusercontent.com/treadon/banger-scorer/main/assets/audio/best_1_edm_score5.3.mp4" controls width="100%"></video>
-
-**#2 — Best Punjabi/Bhangra: 95 BPM, C major (Score: 4.26)**
-
-<video src="https://raw.githubusercontent.com/treadon/banger-scorer/main/assets/audio/best_2_punjabi_score4.3.mp4" controls width="100%"></video>
-
-**#last — Worst Overall: Pop, 135 BPM, F major (Score: 1.98)**
-
-<video src="https://raw.githubusercontent.com/treadon/banger-scorer/main/assets/audio/worst_pop_score2.0.mp4" controls width="100%"></video>
-
-> **[Browse and play all 230 full-length songs on HuggingFace](https://huggingface.co/datasets/treadon/banger-scorer-generated-songs)** — sort by `banger_score` to hear best vs worst.
+> **[Browse and play all 230 songs](https://huggingface.co/datasets/treadon/banger-scorer-generated-songs)** — HuggingFace has a built-in audio player. Sort by `banger_score` descending to hear the best first, ascending for the worst. Can you tell the difference?
 
 ## How It Works
 
